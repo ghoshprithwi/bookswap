@@ -1,0 +1,11 @@
+{
+  "name": "bookswap-backend",
+  "version": "1.0.0",
+  "description": "Backend Application (API) for LDIMS",
+	"main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
