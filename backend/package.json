@@ -4,7 +4,9 @@
   "description": "Backend Application (API) for LDIMS",
 	"main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon server.js"
   },
   "author": "",
   "license": "ISC"
