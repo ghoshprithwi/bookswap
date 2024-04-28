@@ -7,59 +7,31 @@ import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import IconButton, { IconButtonProps } from '@mui/joy/IconButton';
-import Link from '@mui/joy/Link';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
 import Stack from '@mui/joy/Stack';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import Grid from '@mui/joy/Grid';
+import FormHelperText from '@mui/joy/FormHelperText';
+import Autocomplete from '@mui/joy/Autocomplete';
+import Link from '@mui/joy/Link';
+import { GENRES } from '../../constants/options';
 import { ROUTES } from '../../constants/routes';
-import axios from "axios";
 
 interface FormElements extends HTMLFormControlsCollection {
+  firstName: HTMLInputElement,
+  lastName: HTMLInputElement,
   email: HTMLInputElement;
   password: HTMLInputElement;
-  persistent: HTMLInputElement;
+  phone: HTMLInputElement;
+  location: HTMLInputElement;
 }
-interface SignInFormElement extends HTMLFormElement {
+
+interface SignUpFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
-
-const handleLogin = async (e: React.FormEvent<SignInFormElement>) => {
-	e.preventDefault();
-
-	const formElements = e?.currentTarget?.elements;
-
-	// Form Data.
-	const data = {
-	  email: formElements.email.value,
-	  password: formElements.password.value,
-	};
-
-	// TODO: Authenticate user.
-	/* try {
-		const response = await axios.post(
-			"/api/login",
-			{
-				email: email,
-				password: password,
-			}
-		);
-
-			if (response.data) {
-				// Get the logged in user id.
-
-				// Route to dashboard.
-				window.location.replace("/home");
-			}
-	} catch (err) {
-		  console.log(err);
-	} */
-
-	// Route to Home.
-	window.location.replace("/home");
-};
 
 function ColorSchemeToggle(props: IconButtonProps) {
   const { onClick, ...other } = props;
@@ -85,7 +57,29 @@ function ColorSchemeToggle(props: IconButtonProps) {
   );
 }
 
-export default function LoginPage() {
+export default function SignUpPage() {
+  const [genres, setGenres] = React.useState<string[]>([]);
+
+  const createProfile = (event: React.FormEvent<SignUpFormElement>) => {
+	event.preventDefault();
+
+	const formElements = event.currentTarget.elements;
+
+	// Form Data.
+	const data = {
+	  firstName: formElements.firstName.value ?? '',
+	  lastName: formElements.lastName.value ?? '',
+	  email: formElements.email.value ?? '',
+	  password: formElements.password.value ?? '',
+	  phone: formElements.phone.value ?? '',
+	  location: formElements.location.value ?? '',
+	  genres: genres,
+	};
+
+	// TODO: Send request to create user profile.
+	// TODO: Route to Home.
+  }
+
   return (
     <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
       <CssBaseline />
@@ -133,7 +127,7 @@ export default function LoginPage() {
             }}
           >
             <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-			<IconButton variant="soft" color="primary" size="sm">
+              <IconButton variant="soft" color="primary" size="sm">
                 <MenuBookIcon />
               </IconButton>
               <Link href={ROUTES.login} underline="none" paddingRight={'8px'}>
@@ -163,31 +157,76 @@ export default function LoginPage() {
             }}
           >
             <Stack gap={4} sx={{ mb: 2 }}>
-              <Stack gap={1}>
+              <Stack gap={1} textAlign={'left'}>
                 <Typography component="h1" level="h3">
-                  Sign in
-                </Typography>
-                <Typography level="body-sm">
-                  New to BookSwap?{' '}
-                  <Link href={ROUTES.register} level="title-sm">
-                    Sign up!
-                  </Link>
+                  Create Your Profile
                 </Typography>
               </Stack>
             </Stack>
             <Stack gap={4} sx={{ mt: 2 }}>
-              <form onSubmit={handleLogin}>
-                <FormControl required>
-                  <FormLabel>Email</FormLabel>
-                  <Input type="email" name="email" required />
-                </FormControl>
-                <FormControl required>
-                  <FormLabel>Password</FormLabel>
-                  <Input type="password" name="password" required />
-                </FormControl>
+              <form
+                onSubmit={createProfile}
+              >
+				 <Grid container spacing={2} columns={16} sx={{ flexGrow: 1 }}>
+					<Grid xs={8}>
+						<FormControl required>
+							<FormLabel>First Name</FormLabel>
+							<Input type="text" name="firstName" required/>
+						</FormControl>
+					</Grid>
+					<Grid xs={8}>
+						<FormControl required>
+							<FormLabel>Last Name</FormLabel>
+							<Input type="text" name="lastName" required />
+						</FormControl>
+					</Grid>
+					<Grid xs={16}>
+						<FormControl required>
+							<FormLabel>Email</FormLabel>
+							<Input type="email" name="email" required />
+						</FormControl>
+					</Grid>
+					<Grid xs={16}>
+						<FormControl required>
+							<FormLabel>Password</FormLabel>
+							<Input type="password" name="password" required />
+						</FormControl>
+					</Grid>
+					<Grid xs={8}>
+						<FormControl required>
+							<FormLabel>Phone</FormLabel>
+							<Input
+								type="text"
+								name="phone"
+							/>
+						</FormControl>
+					</Grid>
+					<Grid xs={8}>
+						<FormControl required>
+							<FormLabel>Location</FormLabel>
+							<Input type="text" name="location" />
+						</FormControl>
+					</Grid>
+					<Grid xs={16}>
+						<FormControl>
+							<FormLabel>Genres</FormLabel>
+							<Autocomplete
+								multiple
+								placeholder="Select"
+								limitTags={2}
+								options={GENRES}
+								value={genres}
+								onChange={(_e, newValue) => {
+								  setGenres(newValue);
+								}}
+							/>
+							<FormHelperText>Select atleast 3 favorite genres</FormHelperText>
+						</FormControl>
+					</Grid>
+				</Grid>
                 <Stack gap={4} sx={{ mt: 2 }}>
                   <Button type="submit" fullWidth>
-                    Sign in
+                    Register
                   </Button>
                 </Stack>
               </form>
