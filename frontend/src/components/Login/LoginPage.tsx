@@ -16,6 +16,7 @@ import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { ROUTES } from '../../constants/routes';
 import axios from "axios";
+import Snackbar from '@mui/joy/Snackbar';
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -26,40 +27,6 @@ interface SignInFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
 
-const handleLogin = async (e: React.FormEvent<SignInFormElement>) => {
-	e.preventDefault();
-
-	const formElements = e?.currentTarget?.elements;
-
-	// Form Data.
-	const data = {
-	  email: formElements.email.value,
-	  password: formElements.password.value,
-	};
-
-	// TODO: Authenticate user.
-	/* try {
-		const response = await axios.post(
-			"/api/login",
-			{
-				email: email,
-				password: password,
-			}
-		);
-
-			if (response.data) {
-				// Get the logged in user id.
-
-				// Route to dashboard.
-				window.location.replace("/home");
-			}
-	} catch (err) {
-		  console.log(err);
-	} */
-
-	// Route to Home.
-	window.location.replace("/home");
-};
 
 function ColorSchemeToggle(props: IconButtonProps) {
   const { onClick, ...other } = props;
@@ -86,6 +53,41 @@ function ColorSchemeToggle(props: IconButtonProps) {
 }
 
 export default function LoginPage() {
+	const [openErrorToast, setOpenErrorToast] = React.useState(false);
+
+	const handleLogin = async (e: React.FormEvent<SignInFormElement>) => {
+		e.preventDefault();
+
+		const formElements = e?.currentTarget?.elements;
+
+		// Form Data.
+		const data = {
+			email: formElements.email.value,
+			password: formElements.password.value,
+		};
+
+		// TODO: Authenticate user.
+		try {
+			const response = await axios.post(
+				"/api/login",
+				{...data}
+			);
+
+			if (response.data) {
+				// Get the logged in user id.
+
+				// Route to Home.
+				window.location.replace("/home");
+			}
+		} catch (err) {
+			setOpenErrorToast(true);
+			console.log('wrong');
+		}
+
+		// Route to Home.
+		window.location.replace("/home");
+	};
+
   return (
     <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
       <CssBaseline />
@@ -133,7 +135,7 @@ export default function LoginPage() {
             }}
           >
             <Box sx={{ gap: 2, display: 'flex', alignItems: 'center' }}>
-			<IconButton variant="soft" color="primary" size="sm">
+				<IconButton variant="soft" color="primary" size="sm">
                 <MenuBookIcon />
               </IconButton>
               <Link href={ROUTES.login} underline="none" paddingRight={'8px'}>
@@ -215,9 +217,21 @@ export default function LoginPage() {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          backgroundImage: 'url(https://source.unsplash.com/random/1000/?books&dpr=2)',
+          backgroundImage: 'url(https://source.unsplash.com/random/900/?library&dpr=2)',
         })}
       />
+	<Snackbar
+		autoHideDuration={3000}
+		anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+		open={openErrorToast}
+		variant='outlined'
+		color='danger'
+		onClose={(_event) => {
+			setOpenErrorToast(false);
+		}}
+	>
+		Wrong credentials.
+	</Snackbar>
     </CssVarsProvider>
   );
 }

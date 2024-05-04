@@ -8,9 +8,14 @@ import {
   } from "react-router-dom";
 import SignUpPage from './components/SignUp/SignUp.tsx'
 import { ROUTES } from './constants/routes.ts';
-import Home from './components/Home/Home.tsx';
+import Home from './components/Home/App.tsx';
+import MyBooks from './components/MyBooks/App.tsx';
 
 const router = createBrowserRouter( [
+	{
+		path: '/',
+		element: <App />,
+	},
 	{
 		path: ROUTES.login,
 		element: <App />,
@@ -22,6 +27,10 @@ const router = createBrowserRouter( [
 	{
 		path: ROUTES.home,
 		element: <Home />,
+	},
+	{
+		path: ROUTES.myBooks,
+		element: <MyBooks />,
 	},
 ] );
 

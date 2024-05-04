@@ -161,6 +161,12 @@ export default function SignUpPage() {
                 <Typography component="h1" level="h3">
                   Create Your Profile
                 </Typography>
+				<Typography level="body-sm">
+                 Already have an account?{' '}
+                  <Link href={ROUTES.login} level="title-sm">
+                    Sign in
+                  </Link>
+                </Typography>
               </Stack>
             </Stack>
             <Stack gap={4} sx={{ mt: 2 }}>
@@ -254,7 +260,7 @@ export default function SignUpPage() {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          backgroundImage: 'url(https://source.unsplash.com/random/1000/?books&dpr=2)',
+          backgroundImage: 'url(https://source.unsplash.com/random/900/?library&dpr=2)',
         })}
       />
     </CssVarsProvider>
