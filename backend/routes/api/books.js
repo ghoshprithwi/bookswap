@@ -5,6 +5,7 @@ const router = express.Router();
 
 // Load Book model
 const Book = require("../../models/Books");
+const Users = require("../../models/Users");
 
 // @route   GET api/books/test
 // @desc    Tests books route
@@ -41,7 +42,8 @@ router.get('/', async (req, res) => {
 
     // Filter by location
     if (req.query.location) {
-      query.location = req.query.location;
+      const ownerIds = await Users.find({ location: req.query.location }).distinct('userid');
+      query.ownerid = { $in: ownerIds };
     }
 
     // Filter by availability
