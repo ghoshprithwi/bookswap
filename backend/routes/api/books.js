@@ -14,11 +14,48 @@ router.get("/test", (req, res) => res.send("book route testing!"));
 // @route   GET api/books
 // @desc    Get all books
 // @access  Public
-router.get("/", (req, res) => {
-  Book.find()
-    .then((books) => res.json(books))
-    .catch((err) => res.status(404).json({ nobooksfound: "No Books found" }));
+// router.get("/", (req, res) => {
+//   Book.find()
+//     .then((books) => res.json(books))
+//     .catch((err) => res.status(404).json({ nobooksfound: "No Books found" }));
+// });
+
+router.get('/', async (req, res) => {
+  try {
+    let query = {};
+
+    // Filter by genre
+    if (req.query.genre) {
+      query.genre = req.query.genre;
+    }
+
+    // Filter by author
+    if (req.query.author) {
+      query.author = req.query.author;
+    }
+
+    // Filter by title
+    if (req.query.title) {
+      query.title = req.query.title;
+    }
+
+    // Filter by location
+    if (req.query.location) {
+      query.location = req.query.location;
+    }
+
+    // Filter by availability
+    if (req.query.availability) {
+      query.status = req.query.availability === 'available' ? 'available' : { $ne: 'available' };
+    }
+
+    const books = await Book.find(query);
+    res.json(books);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
+
 
 // @route   GET api/books/:id
 // @desc    Get single book by id
