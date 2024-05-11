@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import BookCard from '../BookCard/BookCard';
-import './MyBooks.css';
+import Button from '@mui/joy/Button';
+import Search from '@mui/icons-material/Search';
+import Link from '@mui/joy/Link';
+import { ROUTES } from '../../constants/routes';
 
 interface Post {
 	userId: number;
@@ -10,7 +13,6 @@ interface Post {
   }
 
 export default function BorrowingBooks() {
-
    const [posts, setPosts] = useState<Post[]>([]);
    const [loading, setLoading] = useState(true);
 
@@ -21,7 +23,7 @@ export default function BorrowingBooks() {
         if (!response.ok) {
           throw new Error('Failed to fetch posts');
         }
-        let postsData = await response.json();
+        const postsData = await response.json();
         setPosts(postsData);
         setLoading(false);
       } catch (error) {
@@ -37,16 +39,25 @@ export default function BorrowingBooks() {
 
   return (
 	<>
+		<Link href={ROUTES.search} underline="none">
+			<Button
+				size='lg'
+				color='warning'
+				startDecorator={<Search />}
+				sx={{ mb: '1em' }}
+			>
+				Find Books
+			</Button>
+		</Link>
 		<div className='container'>
-			{ posts.slice(0, 8).map( ( post: any ) => (
+			{ posts.slice(0, 1).map( ( post: Post ) => (
 				<BookCard
 					key={post.id}
 					bookName={post.title}
 					dateString="April 24, 2024 to May 2, 2024"
-					imgSrc="https://placehold.co/280"
 				/>
 			))}
-    	</div>
+		</div>
 	</>
   );
 }

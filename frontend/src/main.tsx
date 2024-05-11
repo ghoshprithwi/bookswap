@@ -10,6 +10,7 @@ import SignUpPage from './components/SignUp/SignUp.tsx'
 import { ROUTES } from './constants/routes.ts';
 import Home from './components/Home/App.tsx';
 import MyBooks from './components/MyBooks/App.tsx';
+import Search from './components/Search/App.tsx';
 
 const router = createBrowserRouter( [
 	{
@@ -31,6 +32,10 @@ const router = createBrowserRouter( [
 	{
 		path: ROUTES.myBooks,
 		element: <MyBooks />,
+	},
+	{
+		path: ROUTES.search,
+		element: <Search />,
 	},
 ] );
 

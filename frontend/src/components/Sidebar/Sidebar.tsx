@@ -4,24 +4,29 @@ import Box from '@mui/joy/Box';
 import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
 import IconButton from '@mui/joy/IconButton';
-import Input from '@mui/joy/Input';
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import ListItemButton, { listItemButtonClasses } from '@mui/joy/ListItemButton';
 import ListItemContent from '@mui/joy/ListItemContent';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import Button from '@mui/joy/Button';
+import Search from '@mui/icons-material/SearchRounded';
+import Link from '@mui/joy/Link';
 
 import { closeSidebar } from './utils';
 import Logo from '../Logo/Logo';
 import { ROUTES } from '../../constants/routes';
 
-export default function Sidebar(props: any) {
+interface Props {
+	listItem: string;
+}
+
+export default function Sidebar(props: Props) {
   const { listItem } = props;
 
   return (
@@ -77,7 +82,16 @@ export default function Sidebar(props: any) {
         onClick={() => closeSidebar()}
       />
       <Logo />
-      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Find Books" />
+      <Link href={ROUTES.search} underline="none">
+			<Button
+				size='lg'
+				color='warning'
+				startDecorator={<Search />}
+				sx={{ mb: '1em' }}
+			>
+				Find Books
+			</Button>
+		</Link>
       <Box
         sx={{
           minHeight: 0,
@@ -100,11 +114,11 @@ export default function Sidebar(props: any) {
         >
           <ListItem>
             <ListItemButton
-				 role="menuitem"
-				 component="a"
-				 href={ROUTES.home}
-				 className='list-item'
-				 selected={listItem === 'home' ? true : false}
+				role="menuitem"
+				component="a"
+				href={ROUTES.home}
+				className='list-item'
+				selected={listItem === 'home' ? true : false}
 			>
               <HomeRoundedIcon />
               <ListItemContent>
@@ -115,11 +129,11 @@ export default function Sidebar(props: any) {
 
           <ListItem>
             <ListItemButton
-              role="menuitem"
-              component="a"
-			  href={ROUTES.myBooks}
-			  className='list-item'
-			  selected={listItem === 'my-books' ? true : false}
+				role="menuitem"
+				component="a"
+				href={ROUTES.myBooks}
+				className='list-item'
+				selected={listItem === 'my-books' ? true : false}
             >
               <LibraryBooksIcon />
               <ListItemContent>
@@ -153,11 +167,11 @@ export default function Sidebar(props: any) {
           src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
         />
         <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography level="title-sm">Siriwat K.</Typography>
-          <Typography level="body-xs">siriwatk@test.com</Typography>
+          <Typography level="title-sm">Username</Typography>
+          <Typography level="body-xs">foobar@example.com</Typography>
         </Box>
         <IconButton size="sm" variant="plain" color="neutral">
-          <LogoutRoundedIcon />
+          <Link href={ROUTES.login}><LogoutRoundedIcon /></Link>
         </IconButton>
       </Box>
     </Sheet>

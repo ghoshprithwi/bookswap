@@ -3,4 +3,5 @@ export const ROUTES = {
 	'register': '/register',
 	'home': '/home',
 	'myBooks': 'my-books',
+	'search': 'search',
 };
