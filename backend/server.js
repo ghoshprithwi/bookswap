@@ -2,6 +2,7 @@ const express = require("express");
 const connectDB = require("./config/db");
 const booksRoutes = require("./routes/api/books");
 const usersRoutes = require("./routes/api/users");
+const loginRoutes = require("./routes/api/login");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
@@ -18,7 +19,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // use the routes module as a middleware
 // for the /api/books path
 app.use("/api/books", booksRoutes);
-app.use("/api/users", usersRoutes); 
+app.use("/api/users", usersRoutes);
+app.use("/api/login", loginRoutes);
 
 // Connect Database
 connectDB();

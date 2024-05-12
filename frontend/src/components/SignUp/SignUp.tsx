@@ -75,6 +75,8 @@ export default function SignUpPage() {
 			phone: formElements.phone.value ?? '',
 			location: formElements.location.value ?? '',
 			genres: genres,
+			incomingRequests: [],
+			outgoingRequests: []
 		};
 
 		console.log( data );
