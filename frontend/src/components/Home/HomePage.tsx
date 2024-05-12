@@ -7,8 +7,10 @@ interface Book {
 	authorName: string,
 	availability: string,
 	published: string,
-	id: string,
-	description: string
+	_id: string,
+	description: string,
+	ownerid: string,
+	condition: string
 
 }
 
@@ -45,12 +47,14 @@ export default function HomePage() {
 					<div className='container'>
 						{books.slice(0, 12).map((book: Book) => (
 							<BookCard
-								key={book.id}
+								id={book._id}
 								bookName={book.bookName}
 								authorName={book.authorName}
 								publishedYear={book.published}
 								dateString= {book.availability}
 								description={book.description}
+								owner = {book.ownerid}
+								condition = {book.condition}
 							/>
 						))}
 					</div>

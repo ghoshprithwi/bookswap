@@ -3,6 +3,7 @@ const connectDB = require("./config/db");
 const booksRoutes = require("./routes/api/books");
 const usersRoutes = require("./routes/api/users");
 const loginRoutes = require("./routes/api/login");
+const requestRoutes = require("./routes/api/requests");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/books", booksRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/login", loginRoutes);
+app.use("/api/requests", requestRoutes);
 
 // Connect Database
 connectDB();

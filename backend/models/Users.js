@@ -24,12 +24,12 @@ const UsersSchema = new mongoose.Schema({
       type: [String],
     },
     incomingRequests: [{
-      book: { type: String },
-      requester: { type: String }
+      bookId: { type: String },
+      requesterId: { type: String }
     }],
     outgoingRequests: [{
-      book: { type: String},
-      owner: { type: String}
+      bookId: { type: String},
+      ownerId: { type: String}
     }],
     location: {
       type: String,
