@@ -21,7 +21,7 @@ router.get("/test", (req, res) => res.send("book route testing!"));
 //     .catch((err) => res.status(404).json({ nobooksfound: "No Books found" }));
 // });
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     let query = {};
 
@@ -42,13 +42,18 @@ router.get('/', async (req, res) => {
 
     // Filter by location
     if (req.query.location) {
-      const ownerIds = await Users.find({ location: req.query.location }).distinct('userid');
+      const ownerIds = await Users.find({
+        location: req.query.location,
+      }).distinct("userid");
       query.ownerid = { $in: ownerIds };
     }
 
     // Filter by availability
     if (req.query.availability) {
-      query.status = req.query.availability === 'available' ? 'available' : { $ne: 'available' };
+      query.status =
+        req.query.availability === "available"
+          ? "available"
+          : { $ne: "available" };
     }
 
     const books = await Book.find(query);
@@ -57,7 +62,6 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
 
 // @route   GET api/books/:id
 // @desc    Get single book by id
@@ -71,9 +75,19 @@ router.get('/', async (req, res) => {
 // @route   POST api/books
 // @desc    Add/save book
 // @access  Public
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
+  const user = await User.findById(req.body.ownerid);
   Book.create(req.body)
-    .then((book) => res.json({ msg: "Book added successfully" }))
+    .then(async (book) => {
+       await User.updateOne(
+        { _id: req.body.ownerid},
+        { $push: { ownedbooks: book._id} }
+      );
+    //   db.students.updateOne(
+    //     { _id: 1 },
+    //     { $push: { scores: 89 } }
+    //  )
+    })
     .catch((err) => res.status(400).json({ error: "book" }));
 });
 
@@ -101,7 +115,7 @@ router.get("/owned", async (req, res) => {
   const userId = req.query.id;
 
   try {
-    const user = await User.findById(userId)
+    const user = await User.findById(userId);
     //const user = await User.findById(userId);
     console.log(user);
     if (!user) {
@@ -117,7 +131,7 @@ router.get("/owned", async (req, res) => {
 
     res.json(ownedbooks);
   } catch (err) {
-    console.error("Hi")
+    console.error("Hi");
     console.error(err.message);
     res.status(500).send("Server Error");
   }
@@ -127,7 +141,7 @@ router.get("/borrowed", async (req, res) => {
   const userId = req.query.id;
 
   try {
-    const user = await User.findById(userId)
+    const user = await User.findById(userId);
     //const user = await User.findById(userId);
     console.log(user);
     if (!user) {

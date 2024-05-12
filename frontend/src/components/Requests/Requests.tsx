@@ -1,6 +1,7 @@
 import Typography from '@mui/joy/Typography';
 import { useState, useEffect } from 'react';
 import BookCard from '../BookCard/BookCard';
+import axios from 'axios';
 interface Book {
 	bookName: string;
 	authorName?: string;
@@ -20,11 +21,12 @@ export default function Requests() {
 	useEffect(() => {
 		const fetchPosts = async () => {
 			try {
-				const response = await fetch('http://localhost:8082/api/books');
-				if (!response.ok) {
+				const userId = localStorage.getItem('user');
+				const response = await axios.get(`http://localhost:8082/api/requests?id=${userId}`);
+				if (!response.data) {
 					throw new Error('Failed to fetch posts');
 				}
-				const postsData = await response.json();
+				const postsData = response.data;
 				setBooks(postsData);
 				setLoading(false);
 			} catch (error) {
@@ -48,11 +50,12 @@ export default function Requests() {
 								// key={book.id}
 								type='request'
 								bookName={book.bookName}
+								authorName= {book.authorName}
 								condition={book.condition}
 								description={book.description}
 								dateString={book.availability}
 								publishedYear={book.published}
-								requestedBy='John Doe'
+								requestedBy={book.requestedBy}
 							/>
 						))}
 					</div>

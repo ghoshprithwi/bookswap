@@ -1,41 +1,46 @@
 const express = require("express");
 const User = require("../../models/Users");
-const Book = require("../../models/Book");
+const Book = require("../../models/Books");
 
 const router = new express.Router();
 
-router.post('/requests', async (req, res) => {
-  const { bookId, currentUserId } = req.body;
+router.post('/', async (req, res) => {
+  const { bookId, ownerId, userId } = req.body;
 
   try {
-    // Find the book by its ID to get the owner ID
-    const book = await Book.findById(bookId);
-    if (!book) {
-      return res.status(404).json({ error: 'Book not found' });
-    }
-    const ownerId = book.owner;
+    await User.updateOne(
+      { _id: userId},
+      { $push: { outgoingRequests: { bookId: bookId, ownerId: ownerId }} }
+    )
 
-    // Update the outgoing requests for the current user
-    const requester = await User.findById(currentUserId);
-    if (!requester) {
-      return res.status(404).json({ error: 'Requester not found' });
-    }
-    requester.outgoingRequests.push({ book: bookId, owner: ownerId });
-    await requester.save();
-
-    // Update the incoming requests for the book owner
-    const owner = await User.findById(ownerId);
-    if (!owner) {
-      return res.status(404).json({ error: 'Owner not found' });
-    }
-    owner.incomingRequests.push({ book: bookId, requester: currentUserId });
-    await owner.save();
-
-    return res.status(200).json({ success: true });
+    await User.updateOne(
+      { _id: ownerId},
+      { $push: { incomingRequests: { bookId: bookId, requesterId: userId }} }
+    )
   } catch (error) {
     console.error('Error updating requests:', error);
     return res.status(500).json({ error: 'Server error' });
   }
 });
+
+
+router.get("/", async (req, res) => {
+  const  userId  = req.query.id;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const incomingRequests = user.incomingRequests.map((request) => request.bookId);
+
+    const books = await Book.find({ _id: { $in: incomingRequests } });
+
+    res.json(books);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 
 module.exports = router;

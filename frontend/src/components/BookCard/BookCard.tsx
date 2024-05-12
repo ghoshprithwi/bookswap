@@ -8,8 +8,10 @@ import Sheet from '@mui/joy/Sheet';
 import { useState } from 'react';
 import Grid from '@mui/joy/Grid';
 import Divider from '@mui/joy/Divider';
+import axios from 'axios';
 
 interface Book {
+	id: string;
 	bookName: string;
 	authorName?: string;
 	publishedYear?: string;
@@ -24,9 +26,26 @@ interface Book {
 
 export default function BookCard(props: Book) {
 	const [open, setOpen] = useState<boolean>(false);
-
-	const sendBorrowRequest = () => {
-		// TODO: Send borrow request via API.
+	const userid = localStorage.getItem('user')
+	const ownerid = props.owner;
+	const sendBorrowRequest = async () => {
+		try {
+			const bookId = props.id;
+			const userId = localStorage.getItem('user');
+			const data = {
+				bookId,
+				ownerId: ownerid,
+				userId
+			}
+			const response = await axios.post(
+				"http://localhost:8082/api/requests",
+				{ ...data }
+			);
+		}
+		catch (err) 
+		{
+			console.log(err)
+		}
 		console.log( 'send borrow request');
 	};
 
@@ -41,6 +60,7 @@ export default function BookCard(props: Book) {
 	};
 
 	const { bookName, authorName, publishedYear, condition, dateString, genres, description, owner, type, requestedBy } = props;
+	console.log({owner, userid});
 	return (
 		<Card sx={{ width: 320 }}>
 		<div>
@@ -179,7 +199,7 @@ export default function BookCard(props: Book) {
 					{description}
 				</Typography>
 				{
-					type === 'request' ?
+					type === 'request' &&
 					<>
 						<Button
 							variant="solid"
@@ -200,7 +220,8 @@ export default function BookCard(props: Book) {
 							Reject Request
 						</Button>
 					</>
-						:
+					}
+						{ userid !== owner && type !== 'request' &&
 					<Button
 						variant="solid"
 						size="lg"
@@ -211,6 +232,7 @@ export default function BookCard(props: Book) {
 						Request to Borrow
 					</Button>
 				}
+				
 			</Sheet>
 		</Modal>
 	</Card>
