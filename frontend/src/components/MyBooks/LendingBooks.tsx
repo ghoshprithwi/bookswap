@@ -20,6 +20,7 @@ import Textarea from '@mui/joy/Textarea';
 import ModalDialog from '@mui/joy/ModalDialog';
 import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
+import axios from 'axios';
 
 interface Post {
 	userId: number;
@@ -69,7 +70,7 @@ export default function LendingBooks() {
 		fetchPosts();
 	}, []);
 
-	const createBookListing = (event: React.FormEvent<BookListingFormElement>) => {
+	const createBookListing = async (event: React.FormEvent<BookListingFormElement>) => {
 		event.preventDefault();
 
 		const formElements = event.currentTarget.elements;
@@ -80,13 +81,16 @@ export default function LendingBooks() {
 			authorName: formElements.authorName.value ?? '',
 			published: formElements.published.value ?? '',
 			condition,
-			startDate: formElements.startDate.value ?? '',
-			endDate: formElements.endDate.value ?? '',
+			availability: `${ formElements.startDate.value ?? ''} to ${formElements.endDate.value ?? ''}`,
 			genres,
 			description: formElements.description.value ?? '',
+			ownerid: "Prithwi"
 		};
-
-		console.log(data);
+		const response = await axios.post(
+			"http://localhost:8082/api/books",
+			{ ...data }
+		);
+		console.log(response);
 
 		// TODO: Send request to create user profile.
 		// TODO: Route to Home.

@@ -3,10 +3,13 @@ import { useState, useEffect } from 'react';
 import BookCard from '../BookCard/BookCard';
 
 interface Book {
-	userId: number;
-	id: number;
-	title: string;
-	body: string;
+	bookName: string,
+	authorName: string,
+	availability: string,
+	published: string,
+	id: string,
+	description: string
+
 }
 
 export default function HomePage() {
@@ -16,7 +19,8 @@ export default function HomePage() {
 	useEffect(() => {
 		const fetchBooks = async () => {
 			try {
-				const response = await fetch('https://jsonplaceholder.typicode.com/posts/');
+					
+				const response = await fetch('http://localhost:8082/api/books');
 				if (!response.ok) {
 					throw new Error('Failed to fetch books');
 				}
@@ -42,11 +46,10 @@ export default function HomePage() {
 						{books.slice(0, 12).map((book: Book) => (
 							<BookCard
 								key={book.id}
-								bookName={book.title}
-								authorName="John Doe"
-								publishedYear='2000'
-								dateString="20 May 2024 to 1 Jun 2024"
-								description="Agatha works at a cozy bookstore, but her life turns into a page-turner when a rare manuscript disappears. Aided by a handsome bookworm, she must decipher cryptic clues before a ruthless collector shuts the book on history forever."
+								bookName={book.bookName}
+								authorName={book.authorName}
+								publishedYear={book.published}
+								dateString= {book.availability}						description={book.description}
 							/>
 						))}
 					</div>

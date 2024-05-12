@@ -19,6 +19,7 @@ import Autocomplete from '@mui/joy/Autocomplete';
 import Link from '@mui/joy/Link';
 import { GENRES } from '../../constants/options';
 import { ROUTES } from '../../constants/routes';
+import axios from 'axios';
 
 interface FormElements extends HTMLFormControlsCollection {
 	firstName: HTMLInputElement,
@@ -60,7 +61,7 @@ function ColorSchemeToggle(props: IconButtonProps) {
 export default function SignUpPage() {
 	const [genres, setGenres] = React.useState<string[]>([]);
 
-	const createProfile = (event: React.FormEvent<SignUpFormElement>) => {
+	const createProfile = async (event: React.FormEvent<SignUpFormElement>) => {
 		event.preventDefault();
 
 		const formElements = event.currentTarget.elements;
@@ -77,9 +78,25 @@ export default function SignUpPage() {
 		};
 
 		console.log( data );
+		try {
+			const response = await axios.post(
+				"http://localhost:8082/api/users",
+				{ ...data }
+			);
 
-		// TODO: Send request to create user profile.
-		// TODO: Route to Home.
+			if (response.data) {
+				// Get the logged in user id.
+
+				// Save in localStorage.
+				window.localStorage.setItem( 'user', response.data );
+
+				// Route to Home.
+				window.location.replace("/home");
+			}
+		} catch (err) {
+			//setOpenErrorToast(true);
+		}
+		
 	}
 
 	return (

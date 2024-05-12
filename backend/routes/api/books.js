@@ -30,14 +30,14 @@ router.get('/', async (req, res) => {
       query.genre = req.query.genre;
     }
 
-    // Filter by author
-    if (req.query.author) {
-      query.author = req.query.author;
+    // Filter by authorName
+    if (req.query.authorNameName) {
+      query.authorName = req.query.authorName;
     }
 
-    // Filter by title
-    if (req.query.title) {
-      query.title = req.query.title;
+    // Filter by bookName
+    if (req.query.bookName) {
+      query.bookName = req.query.bookName;
     }
 
     // Filter by location

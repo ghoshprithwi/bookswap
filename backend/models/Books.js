@@ -7,29 +7,32 @@ const mongoose = require('mongoose');
 const BookSchema = new mongoose.Schema({
   bookid: {
     type: String,
-    required: true,
   },
-  title: {
+  bookName: {
     type: String,
-    required: true
   },
-  author: {
+  authorName: {
     type: String,
-    required: true
+  },
+  published: {
+    type: String,
+  },
+  condition: {
+    type: String,
   },
   genre: {
-    type: String,
-    required: true
+    type: [String],
   },
-  status: {
+  availbility: {
     type: String,
-    required: true
   },
   ownerid: {
     type: String,
-    required: true
   },
   borrowerid: {
+    type: String,
+  },
+  description: {
     type: String,
   }
 });
