@@ -49,7 +49,8 @@ export default function HomePage() {
 								bookName={book.bookName}
 								authorName={book.authorName}
 								publishedYear={book.published}
-								dateString= {book.availability}						description={book.description}
+								dateString= {book.availability}
+								description={book.description}
 							/>
 						))}
 					</div>

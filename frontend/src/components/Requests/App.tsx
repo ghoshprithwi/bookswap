@@ -2,14 +2,14 @@ import { CssVarsProvider } from '@mui/joy/styles';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
 import Sidebar from '../Sidebar/Sidebar';
-import Search from './Search';
+import Requests from './Requests';
 
 export default function App() {
 	return (
 		<CssVarsProvider disableTransitionOnChange>
 			<CssBaseline />
 			<Box sx={{ display: 'flex', minHeight: '100vh', maxWidth: '100%' }}>
-				<Sidebar listItem="my-books" />
+				<Sidebar listItem="requests" />
 				<Box
 					component="main"
 					className="MainContent"
@@ -25,7 +25,7 @@ export default function App() {
 						padding: '1.5em',
 					}}
 				>
-					<Search />
+					<Requests />
 				</Box>
 			</Box>
 		</CssVarsProvider>

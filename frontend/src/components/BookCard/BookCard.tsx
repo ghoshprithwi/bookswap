@@ -18,6 +18,8 @@ interface Book {
 	genres?: string;
 	description?: string;
 	owner?: string;
+	type?: string;
+	requestedBy?: string;
 }
 
 export default function BookCard(props: Book) {
@@ -28,10 +30,28 @@ export default function BookCard(props: Book) {
 		console.log( 'send borrow request');
 	};
 
-	const { bookName, authorName, publishedYear, condition, dateString, genres, description, owner } = props;
+	const acceptRequest = () => {
+		// TODO: Send accept request via API.
+		console.log( 'accept request');
+	};
+
+	const rejectRequest = () => {
+		// TODO: Send reject request via API.
+		console.log( 'reject request');
+	};
+
+	const { bookName, authorName, publishedYear, condition, dateString, genres, description, owner, type, requestedBy } = props;
 	return (
 		<Card sx={{ width: 320 }}>
 		<div>
+			<div>
+				<Typography level="body-xs">
+					Requested By {' '}
+					<Typography fontSize="md" fontWeight="lg">
+						{requestedBy}
+					</Typography>
+				</Typography>
+			</div>
 			<Typography level="title-lg">{ bookName }</Typography>
 			<Typography level="body-sm">{ dateString }</Typography>
 		</div>
@@ -63,7 +83,7 @@ export default function BookCard(props: Book) {
 			<Sheet
 				variant="outlined"
 				sx={{
-					maxWidth: 750,
+					width: 720,
 					borderRadius: 'md',
 					p: 3,
 					boxShadow: 'lg',
@@ -155,15 +175,39 @@ export default function BookCard(props: Book) {
 				>
 					{description}
 				</Typography>
-				<Button
-					variant="solid"
-					size="lg"
-					color="primary"
-					sx={{ mt: '1em', alignSelf: 'center', fontWeight: 600 }}
-					onClick={sendBorrowRequest}
-				>
-					Request to Borrow
-				</Button>
+				{
+					type === 'request' ?
+					<>
+						<Button
+							variant="solid"
+							size="md"
+							color="success"
+							sx={{ mr: '16px', alignSelf: 'center', fontWeight: 600 }}
+							onClick={acceptRequest}
+						>
+							Accept Request
+						</Button>
+						<Button
+							variant="solid"
+							size="md"
+							color="danger"
+							sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
+							onClick={rejectRequest}
+						>
+							Reject Request
+						</Button>
+					</>
+						:
+					<Button
+						variant="solid"
+						size="lg"
+						color="primary"
+						sx={{ mt: '1em', alignSelf: 'center', fontWeight: 600 }}
+						onClick={sendBorrowRequest}
+					>
+						Request to Borrow
+					</Button>
+				}
 			</Sheet>
 		</Modal>
 	</Card>
