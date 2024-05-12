@@ -44,14 +44,17 @@ export default function BookCard(props: Book) {
 	return (
 		<Card sx={{ width: 320 }}>
 		<div>
-			<div>
-				<Typography level="body-xs">
-					Requested By {' '}
-					<Typography fontSize="md" fontWeight="lg">
-						{requestedBy}
+			{
+				type === 'request' &&
+				<div>
+					<Typography level="body-xs">
+						Requested by {' '}
+						<Typography fontSize="md" fontWeight="lg">
+							{requestedBy}
+						</Typography>
 					</Typography>
-				</Typography>
-			</div>
+				</div>
+			}
 			<Typography level="title-lg">{ bookName }</Typography>
 			<Typography level="body-sm">{ dateString }</Typography>
 		</div>
