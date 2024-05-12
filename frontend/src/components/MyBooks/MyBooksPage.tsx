@@ -42,16 +42,6 @@ export default function MyBooksPage() {
 							1
 						</Chip>
 					</Tab>
-					<Tab sx={{ outline: 'none' }}>
-						Requests {' '}
-						<Chip
-							size="md"
-							variant="solid"
-							color='primary'
-						>
-							2
-						</Chip>
-					</Tab>
 				</TabList>
 				<TabPanel value={0}>
 					<LendingBooks />

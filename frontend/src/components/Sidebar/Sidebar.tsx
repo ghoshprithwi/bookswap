@@ -144,16 +144,17 @@ export default function Sidebar(props: Props) {
 
           <ListItem>
             <ListItemButton
-              role="menuitem"
-              component="a"
-              href="/joy-ui/getting-started/templates/messages/"
+				role="menuitem"
+				component="a"
+				href={ROUTES.requests}
+				selected={listItem === 'requests' ? true : false}
             >
               <QuestionAnswerRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Messages</Typography>
+                <Typography level="title-sm">Requests</Typography>
               </ListItemContent>
               <Chip size="sm" color="primary" variant="solid">
-                4
+                1
               </Chip>
             </ListItemButton>
           </ListItem>
