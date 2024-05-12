@@ -63,7 +63,7 @@ export default function BookCard(props: Book) {
 			<Sheet
 				variant="outlined"
 				sx={{
-					maxWidth: 750,
+					minWidth: 750,
 					borderRadius: 'md',
 					p: 3,
 					boxShadow: 'lg',

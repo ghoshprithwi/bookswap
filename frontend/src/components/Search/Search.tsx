@@ -1,86 +1,128 @@
-import FormControl from '@mui/joy/FormControl';
+import Button from '@mui/joy/Button';
 import Input from '@mui/joy/Input';
 import Grid from '@mui/joy/Grid';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import BookCard from '../BookCard/BookCard';
 import { GENRES } from '../../constants/options';
 import Autocomplete from '@mui/joy/Autocomplete';
+import axios from 'axios';
+interface Book {
+	bookName: string;
+	authorName?: string;
+	published?: string;
+	condition?: string;
+	availability: string;
+	genres?: string;
+	description?: string;
+	owner?: string;
+}
+interface FormElements extends HTMLFormControlsCollection {
+	title: HTMLInputElement,
+	author: HTMLInputElement,
+	genres: HTMLInputElement;
+	location: HTMLInputElement;
+}
 
-
-interface Post {
-	userId: number;
-	id: number;
-	title: string;
-	body: string;
+interface SearchFormElement extends HTMLFormElement {
+	readonly elements: FormElements;
 }
 
 export default function Search() {
-	const [searchTerm, setSearchTerm] = useState<string>('');
-	const [loading, setLoading] = useState<boolean>(true);
+	const [loading, setLoading] = useState<string>('No Results');
 	const [results, setResults] = useState<[]>([]);
 	const [genres, setGenres] = useState<string[]>([]);
 
-	useEffect(() => {
-		const fetchPosts = async () => {
-			try {
-				const response = await fetch('https://jsonplaceholder.typicode.com/posts/');
-				if (!response.ok) {
-					throw new Error('Failed to fetch posts');
-				}
-				const postsData = await response.json();
-				setResults(postsData);
-				setLoading(false);
-			} catch (error) {
-				setLoading(false);
-			}
+	const sendSearchRequest = async (event: React.FormEvent<SearchFormElement>) => {
+		event.preventDefault();
+
+		const formElements = event.currentTarget.elements;
+
+		// Form Data.
+		const data = {
+			title: formElements.title.value ?? '',
+			author: formElements.author.value ?? '',
+			location: formElements.location.value ?? '',
+			genres: genres,
 		};
 
-		fetchPosts();
-	}, [searchTerm, genres]);
+		console.log( data );
+		try {
+			const response = await axios.post(
+				"http://localhost:8082/api/users",
+				{ ...data }
+			);
 
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchTerm(event.target.value);
-		console.log(searchTerm);
+			console.log( response );
+			setLoading('Loading...');
+
+			if (response.data) {
+				setResults(response.data);
+				setLoading('');
+			}
+		} catch (err) {
+			setLoading('No Results');
+		}
 	};
 
 	return (
 		<>
-			<Grid container spacing={2} columns={16}>
-				<Grid xs={8}>
-					<FormControl required>
+			<form onSubmit={sendSearchRequest}>
+				<Grid container spacing={2} columns={16}>
+					<Grid xs={4}>
 						<Input
 							type="search"
 							size="lg"
-							name="searchTerm"
-							sx={{ width: '800px' }}
-							required
-							onChange={handleInputChange}
-							placeholder='Search for books'
+							name="title"
+							placeholder='Search by title'
 						/>
-					</FormControl>
+					</Grid>
+					<Grid xs={3}>
+						<Input
+							type="text"
+							size="lg"
+							name="location"
+							placeholder='Search by location'
+						/>
+					</Grid>
+					<Grid xs={3}>
+						<Input
+							type="text"
+							size="lg"
+							name="author"
+							placeholder='Search by author name'
+						/>
+					</Grid>
+					<Grid xs={3}>
+						<Autocomplete
+							multiple
+							size='lg'
+							placeholder="Select Genre"
+							limitTags={2}
+							options={GENRES}
+							value={genres}
+							onChange={(_e, newValue) => {
+								setGenres(newValue);
+							}}
+						/>
+					</Grid>
+					<Grid xs={2}>
+						<Button size="lg" type="submit" fullWidth>
+							Search
+						</Button>
+					</Grid>
 				</Grid>
-				<Grid>
-					<Autocomplete
-						multiple
-						size='lg'
-						placeholder="Select"
-						limitTags={2}
-						options={GENRES}
-						value={genres}
-						onChange={(_e, newValue) => {
-							setGenres(newValue);
-						}}
-					/>
-				</Grid>
-			</Grid>
+			</form>
 			{
-				loading ? <div>Loading...</div> :
+				loading ? <div>{loading}</div> :
 					<div className='container' style={{ width: '80%', marginTop: '2em' }}>
-						{results.slice(0, 10).map((post: Post) => (
+						{ results?.length > 0 && results.map((book: Book) => (
 							<BookCard
-								key={post.id}
-								bookName={post.title}
-								dateString="April 24, 2024 to May 2, 2024"
+								// key={book.id}
+								bookName={book.bookName}
+								condition={book.condition}
+								description={book.description}
+								dateString={book.availability}
+								publishedYear={book.published}
 							/>
 						))}
 					</div>
