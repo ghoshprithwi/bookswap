@@ -4,6 +4,7 @@ import Button from '@mui/joy/Button';
 import Search from '@mui/icons-material/Search';
 import Link from '@mui/joy/Link';
 import { ROUTES } from '../../constants/routes';
+import axios from 'axios';
 
 interface Post {
 	userId: number;
@@ -16,23 +17,26 @@ export default function BorrowingBooks() {
    const [posts, setPosts] = useState<Post[]>([]);
    const [loading, setLoading] = useState(true);
 
-   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts/');
-        if (!response.ok) {
-          throw new Error('Failed to fetch posts');
-        }
-        const postsData = await response.json();
-        setPosts(postsData);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
+   useEffect(() => {	
+	const fetchPosts = async () => {
+			
+				
+		const id = localStorage.getItem('user')  ?? ''
+		try {
+			const response = await axios.get(
+				`http://localhost:8082/api/books/borrowed?id=${id}`
+			  );
+			if (response.data){
+				setPosts(response.data);
+			}
+		}
+				
+	 catch (error) {
+		
+	}
+};
+fetchPosts();
+}, []);
 
 
   if (loading) return <div>Loading...</div>;

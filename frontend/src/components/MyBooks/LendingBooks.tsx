@@ -54,19 +54,22 @@ export default function LendingBooks() {
 
 	useEffect(() => {
 		const fetchPosts = async () => {
-			try {
-				const response = await fetch('https://jsonplaceholder.typicode.com/posts/');
-				if (!response.ok) {
-					throw new Error('Failed to fetch posts');
+			
+				
+				const id = localStorage.getItem('user')  ?? ''
+				try {
+					const response = await axios.get(
+						`http://localhost:8082/api/books/owned?id=${id}`
+					  );
+					if (response.data){
+						setPosts(response.data);
+					}
 				}
-				const postsData = await response.json();
-				setPosts(postsData);
-				setLoading(false);
-			} catch (error) {
-				setLoading(false);
+						
+			 catch (error) {
+				
 			}
 		};
-
 		fetchPosts();
 	}, []);
 

@@ -69,15 +69,15 @@ export default function LoginPage() {
 		// TODO: Authenticate user.
 		try {
 			const response = await axios.post(
-				"/api/login",
+				"http://localhost:8082/api/login",
 				{ ...data }
 			);
 
-			if (response.data) {
+			if (response.data) {	
 				// Get the logged in user id.
 
 				// Save in localStorage.
-				window.localStorage.setItem( 'user', "" );
+				window.localStorage.setItem( 'user', response.data['_id'] );
 
 				// Route to Home.
 				window.location.replace("/home");
@@ -86,8 +86,6 @@ export default function LoginPage() {
 			setOpenErrorToast(true);
 		}
 
-		// Route to Home.
-		window.location.replace("/home");
 	};
 
 	return (

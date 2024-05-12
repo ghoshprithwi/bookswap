@@ -23,9 +23,14 @@ const UsersSchema = new mongoose.Schema({
     borrowedbooks: {
       type: [String],
     },
-    requestedbooks: {
-      type: [String],
-    },
+    incomingRequests: [{
+      book: { type: String },
+      requester: { type: String }
+    }],
+    outgoingRequests: [{
+      book: { type: String},
+      owner: { type: String}
+    }],
     location: {
       type: String,
     },

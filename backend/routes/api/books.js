@@ -62,11 +62,11 @@ router.get('/', async (req, res) => {
 // @route   GET api/books/:id
 // @desc    Get single book by id
 // @access  Public
-router.get("/:id", (req, res) => {
-  Book.findById(req.params.id)
-    .then((book) => res.json(book))
-    .catch((err) => res.status(404).json({ nobookfound: "No Book found" }));
-});
+// router.get("/:id", (req, res) => {
+//   Book.findById(req.params.id)
+//     .then((book) => res.json(book))
+//     .catch((err) => res.status(404).json({ nobookfound: "No Book found" }));
+// });
 
 // @route   POST api/books
 // @desc    Add/save book
@@ -95,6 +95,57 @@ router.delete("/:id", (req, res) => {
   Book.findByIdAndDelete(req.params.id)
     .then((book) => res.json({ mgs: "Book entry deleted successfully" }))
     .catch((err) => res.status(404).json({ error: "No such a book" }));
+});
+
+router.get("/owned", async (req, res) => {
+  const userId = req.query.id;
+
+  try {
+    const user = await User.findById(userId)
+    //const user = await User.findById(userId);
+    console.log(user);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Extract the IDs of the owned books
+    const ownedBookIds = user.ownedbooks;
+    console.log(ownedBookIds);
+
+    // Find the details of the owned books from the Book collection
+    const ownedbooks = await Book.find({ _id: { $in: ownedBookIds } });
+
+    res.json(ownedbooks);
+  } catch (err) {
+    console.error("Hi")
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.get("/borrowed", async (req, res) => {
+  const userId = req.query.id;
+
+  try {
+    const user = await User.findById(userId)
+    //const user = await User.findById(userId);
+    console.log(user);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Extract the IDs of the owned books
+    const borrowedBookIds = user.borrowedbooks;
+    console.log(borrowedBookIds);
+
+    // Find the details of the owned books from the Book collection
+    const borrowedbooks = await Book.find({ _id: { $in: borrowedBookIds } });
+
+    res.json(borrowedbooks);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 module.exports = router;
