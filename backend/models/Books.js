@@ -23,7 +23,7 @@ const BookSchema = new mongoose.Schema({
   genre: {
     type: [String],
   },
-  availbility: {
+  availability: {
     type: String,
   },
   ownerid: {

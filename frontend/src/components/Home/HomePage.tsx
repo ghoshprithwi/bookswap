@@ -10,7 +10,8 @@ interface Book {
 	_id: string,
 	description: string,
 	ownerid: string,
-	condition: string
+	condition: string,
+	genre: string[]
 
 }
 
@@ -55,6 +56,7 @@ export default function HomePage() {
 								description={book.description}
 								owner = {book.ownerid}
 								condition = {book.condition}
+								genres={book.genre}
 							/>
 						))}
 					</div>

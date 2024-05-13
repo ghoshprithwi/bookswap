@@ -18,7 +18,7 @@ interface Book {
 	publishedYear?: string;
 	condition?: string;
 	dateString: string;
-	genres?: string;
+	genres?: string[];
 	description?: string;
 	owner?: string;
 	type?: string;
@@ -47,7 +47,7 @@ export default function BookCard(props: Book) {
 				{ ...data }
 			);
 
-			if ( 200 === response.status ) {
+			if (response.data) {
 				setShowRequestToast(true);
 				window.location.reload();
 			}
@@ -230,7 +230,9 @@ export default function BookCard(props: Book) {
 							fontWeight="md"
 							mb={1}
 						>
-							Genres: {genres}
+							Genres: {genres && genres.map((item, index) => (
+  <span key={index}>{item}{index < genres.length - 1 ? ', ' : ''}</span>
+))}
 						</Typography>
 						<Typography
 							component="p"
