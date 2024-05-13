@@ -83,10 +83,6 @@ router.post("/", async (req, res) => {
         { _id: req.body.ownerid},
         { $push: { ownedbooks: book._id} }
       );
-    //   db.students.updateOne(
-    //     { _id: 1 },
-    //     { $push: { scores: 89 } }
-    //  )
     })
     .catch((err) => res.status(400).json({ error: "book" }));
 });
