@@ -93,12 +93,11 @@ export default function SignUpPage() {
 				window.localStorage.setItem( 'user', response.data );
 
 				// Route to Home.
-				window.location.replace("/home");
+				window.location.replace("/login");
 			}
 		} catch (err) {
 			//setOpenErrorToast(true);
 		}
-		
 	}
 
 	return (

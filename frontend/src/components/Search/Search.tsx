@@ -7,6 +7,7 @@ import { GENRES } from '../../constants/options';
 import Autocomplete from '@mui/joy/Autocomplete';
 import axios from 'axios';
 interface Book {
+	_id: string;
 	bookName: string;
 	authorName?: string;
 	published?: string;
@@ -45,14 +46,14 @@ export default function Search() {
 			genres: genres,
 		};
 
-		console.log( data );
+		console.log(data);
 		try {
 			const response = await axios.post(
 				"http://localhost:8082/api/users",
 				{ ...data }
 			);
 
-			console.log( response );
+			console.log(response);
 			setLoading('Loading...');
 
 			if (response.data) {
@@ -115,9 +116,9 @@ export default function Search() {
 			{
 				loading ? <div>{loading}</div> :
 					<div className='container' style={{ width: '80%', marginTop: '2em' }}>
-						{ results?.length > 0 && results.map((book: Book) => (
+						{results?.length > 0 && results.map((book: Book) => (
 							<BookCard
-								// key={book.id}
+								id={book._id}
 								bookName={book.bookName}
 								condition={book.condition}
 								description={book.description}

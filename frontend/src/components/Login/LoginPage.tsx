@@ -73,7 +73,7 @@ export default function LoginPage() {
 				{ ...data }
 			);
 
-			if (response.data) {	
+			if (response.data) {
 				// Get the logged in user id.
 
 				// Save in localStorage.

@@ -1,5 +1,5 @@
 export const GENRES = [
- 	'Fiction',
+	'Fiction',
 	'Non-Fiction',
 	'Sci-Fi',
 	'Horror',
