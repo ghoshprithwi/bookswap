@@ -49,14 +49,44 @@ export default function BookCard(props: Book) {
 		console.log( 'send borrow request');
 	};
 
-	const acceptRequest = () => {
-		// TODO: Send accept request via API.
-		console.log( 'accept request');
+	const acceptRequest = async () => {
+		const bookId = props.id;
+		const ownerId = localStorage.getItem('user')
+		const requesterId = props.requestedBy;
+		const data = {
+			bookId, ownerId, requesterId
+		}
+		try {
+			const response = await axios.put(
+				"http://localhost:8082/api/requests/accept",
+				{ ...data });
+				if (response.data) {
+					alert('Request Accepted');
+				}
+		}
+		catch (error) {
+			alert('Unable to accept this request');
+		}
 	};
 
-	const rejectRequest = () => {
-		// TODO: Send reject request via API.
-		console.log( 'reject request');
+	const rejectRequest = async () => {
+		const bookId = props.id;
+		const ownerId = localStorage.getItem('user')
+		const requesterId = props.requestedBy;
+		const data = {
+			bookId, ownerId, requesterId
+		}
+		try {
+			const response = await axios.put(
+				"http://localhost:8082/api/requests/reject",
+				{ ...data });
+				if (response.data) {
+					alert('Request Rejected');
+				}
+		}
+		catch (error) {
+			alert('Unable to reject this request');
+		}
 	};
 
 	const { bookName, authorName, publishedYear, condition, dateString, genres, description, owner, type, requestedBy } = props;

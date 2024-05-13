@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import BookCard from '../BookCard/BookCard';
 import axios from 'axios';
 interface Book {
+	_id: string,
 	bookName: string;
 	authorName?: string;
 	published?: string;
@@ -11,7 +12,7 @@ interface Book {
 	genres?: string;
 	description?: string;
 	owner?: string;
-	requestedBy?: string;
+	requester?: string;
 }
 
 export default function Requests() {
@@ -47,7 +48,7 @@ export default function Requests() {
 					<div className='container' style={{ width: '80%', marginTop: '2em' }}>
 						{ books?.length > 0 && books.map((book: Book) => (
 							<BookCard
-								// key={book.id}
+								id={book._id}
 								type='request'
 								bookName={book.bookName}
 								authorName= {book.authorName}
@@ -55,7 +56,7 @@ export default function Requests() {
 								description={book.description}
 								dateString={book.availability}
 								publishedYear={book.published}
-								requestedBy={book.requestedBy}
+								requestedBy={book.requester}
 							/>
 						))}
 					</div>
