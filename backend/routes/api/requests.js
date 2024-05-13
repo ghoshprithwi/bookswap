@@ -17,6 +17,7 @@ router.post('/', async (req, res) => {
       { _id: ownerId},
       { $push: { incomingRequests: { bookId: bookId, requesterId: userId }} }
     )
+    return res.json({ msg: "Request sent successfully" });
   } catch (error) {
     console.error('Error updating requests:', error);
     return res.status(500).json({ error: 'Server error' });

@@ -1,7 +1,6 @@
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
-import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
 import IconButton from '@mui/joy/IconButton';
 import List from '@mui/joy/List';
@@ -153,9 +152,6 @@ export default function Sidebar(props: Props) {
               <ListItemContent>
                 <Typography level="title-sm">Requests</Typography>
               </ListItemContent>
-              <Chip size="sm" color="primary" variant="solid">
-                1
-              </Chip>
             </ListItemButton>
           </ListItem>
         </List>
@@ -168,8 +164,8 @@ export default function Sidebar(props: Props) {
           src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
         />
         <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography level="title-sm">Username</Typography>
-          <Typography level="body-xs">foobar@example.com</Typography>
+          <Typography level="title-sm">{localStorage.getItem('name')}</Typography>
+          <Typography level="body-xs">{localStorage.getItem('email')}</Typography>
         </Box>
         <IconButton size="sm" variant="plain" color="neutral">
           <Link href={ROUTES.login}><LogoutRoundedIcon /></Link>

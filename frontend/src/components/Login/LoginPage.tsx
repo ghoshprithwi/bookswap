@@ -78,6 +78,9 @@ export default function LoginPage() {
 
 				// Save in localStorage.
 				window.localStorage.setItem( 'user', response.data['_id'] );
+				window.localStorage.setItem('email', response.data['email']);
+				window.localStorage.setItem('name', response.data['firstName']);
+
 
 				// Route to Home.
 				window.location.replace("/home");

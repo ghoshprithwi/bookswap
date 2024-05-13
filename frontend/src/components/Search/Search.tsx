@@ -40,17 +40,18 @@ export default function Search() {
 
 		// Form Data.
 		const data = {
-			title: formElements.title.value ?? '',
-			author: formElements.author.value ?? '',
+			bookName: formElements.title.value ?? '',
+			authorName: formElements.author.value ?? '',
 			location: formElements.location.value ?? '',
 			genres: genres,
 		};
+		const genresString = data.genres.join(',');
 
-		console.log(data);
+		const paramsData = { ...data, genres: genresString }
+		const params = new URLSearchParams(paramsData).toString();
 		try {
-			const response = await axios.post(
-				"http://localhost:8082/api/users",
-				{ ...data }
+			const response = await axios.get(
+				`http://localhost:8082/api/books?${params}`,
 			);
 
 			console.log(response);
